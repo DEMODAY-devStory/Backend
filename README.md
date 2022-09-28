@@ -72,7 +72,7 @@ python manage.py runserver
 - ```main``` - 프론트와 소통하는 최종 코드로, 백엔드 내 테스트를 통과한 코드
 - ```develop``` - 백엔드 내부에서 공유하는 코드로, 로컬 테스트를 통과한 코드
 
-**정리**
+*정리*
 
 로컬 환경에서 개발 및 테스트 후 ```develop``` 으로 push <br>
 
@@ -80,6 +80,8 @@ python manage.py runserver
 
 만약, ```main``` 에서 프론트와 연동 후 오류 발생시 로컬에서 수정 후 바로 ```main``` 에 push <br>
   -> 이후 ```main``` -> ```develop``` 으로 브랜치 업데이트
+  
+<br>
 
 ### 커밋
 
