@@ -3,7 +3,7 @@ Installation in Windows
 -------------------
 <code>
 <pre>
-git clone
+git clone https://github.com/DEMODAY-devStory/Backend.git
 python -m venv myvenv
 source myvenv/Script/activate
 pip install django
@@ -17,7 +17,7 @@ Installation in Mac
 -------------------
 <code>
 <pre>
-git clone
+git clone https://github.com/DEMODAY-devStory/Backend.git
 python3 -m venv myvenv
 source myvenv/bin/activate
 pip3 install django
