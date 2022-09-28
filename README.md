@@ -94,6 +94,11 @@ python manage.py runserver
 ex. :sparkles: 회원가입 기능 추가 <br>
 ex. :bug: 로그인 실패 시 빈 페이지가 아닌 메인 페이지로 이동
 
+&#43;
+
+- 커밋 메세지는 한글로
+- 커밋은 여러 번, 푸시는 한 번
+
 <br>
 
 
