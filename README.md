@@ -4,7 +4,7 @@
 
 <code>
 <pre>
-git clone https://github.com/DEMODAY-devStory/Backend.git
+git clone https://github.com/DEMODAY-devStory/backend.git
 cd backend
 python -m venv myvenv
 source myvenv/Script/activate
@@ -17,7 +17,7 @@ pip install -r requirements.txt
 
 <code>
 <pre>
-git clone https://github.com/DEMODAY-devStory/Backend.git
+git clone https://github.com/DEMODAY-devStory/backend.git
 cd backend
 python3 -m venv myvenv
 source myvenv/bin/activate
