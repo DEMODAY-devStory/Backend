@@ -27,3 +27,32 @@ source myvenv/bin/activate
 pip3 install django
 pip3 install -r requirements.txt
 ```
+
+## 실행
+
+### 1. 가상 환경 실행
+위 초기 셋팅에서 진행했을 경우 넘어간다
+- Windows
+```
+cd backend
+source myvenv/Script/activate
+```
+
+- Mac
+```
+cd backend
+source myvenv/bin/activate
+```
+
+### 2. 데이터베이스 업데이트
+Mac은 ```python``` -> ```python3``` 로 실행
+
+```
+python manage.py makemigrations
+python manage.py migrate
+```
+
+### 3. 서버 실행
+```
+python manage.py runserver
+```
