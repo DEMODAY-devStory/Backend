@@ -10,6 +10,9 @@ pip install django
 pip install -r requirements.txt
 </pre>
 </code>
+
+
+
 Installation in Mac
 -------------------
 <code>
