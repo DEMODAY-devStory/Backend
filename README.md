@@ -1,10 +1,11 @@
 # Backend
-Installation in Windows
--------------------
+
+## Installation in Windows
+
 <code>
 <pre>
 git clone https://github.com/DEMODAY-devStory/Backend.git
-cd Backend
+cd backend
 python -m venv myvenv
 source myvenv/Script/activate
 pip install django
@@ -12,14 +13,12 @@ pip install -r requirements.txt
 </pre>
 </code>
 
+## Installation in Mac
 
-
-Installation in Mac
--------------------
 <code>
 <pre>
 git clone https://github.com/DEMODAY-devStory/Backend.git
-cd Backend
+cd backend
 python3 -m venv myvenv
 source myvenv/bin/activate
 pip3 install django
