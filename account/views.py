@@ -1,13 +1,10 @@
-from gc import get_objects
-from django.shortcuts import render
 from rest_framework import status
-from rest_framework.views import APIView
+from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
-from rest_framework.generics import CreateAPIView, GenericAPIView
+from rest_framework.generics import CreateAPIView
 from rest_framework.permissions import AllowAny
 
 from .serializers import UserSerializer
-from .models import User
 
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
@@ -18,22 +15,20 @@ class UserView(CreateAPIView):
     serializer_class = UserSerializer
     permission_classes = (AllowAny,)
 
-    def post(self, request):
+    def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
 
         try:
             serializer.is_valid(raise_exception=True)
-        except:
-            status_code = status.HTTP_200_OK
-            return Response({'success': "false", 'status code': status_code, }, status=status_code)
-        serializer.save()  # serializer 내부의 create() 호출
-        status_code = status.HTTP_201_CREATED  # 성공
-        response = {
-            'success': "true",
-            'status code': status_code,
-        }
-        return Response(response, status=status_code)
+        except ValidationError:
+            # 데이터가 unique하지 않음
+            return Response(data={'message': "이미 가입된 회원입니다"}, status=status.HTTP_400_BAD_REQUEST)
+        except Exception:
+            # 기타 오류 (발생하지 않을 것으로 추정)
+            return Response(exception=Exception)
 
+        serializer.save()
+        return Response(status=status.HTTP_201_CREATED)
 
 # @method_decorator(csrf_exempt, name='dispatch')
 # class UserLoginView(GenericAPIView):
