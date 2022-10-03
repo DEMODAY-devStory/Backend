@@ -32,6 +32,7 @@ class UserSignUpView(CreateAPIView):
         serializer.save()
         return Response(status=status.HTTP_201_CREATED)
 
+
 @method_decorator(csrf_exempt, name='dispatch')
 class UserLoginView(GenericAPIView):
     permission_classes = (AllowAny,)
@@ -48,8 +49,9 @@ class UserLoginView(GenericAPIView):
             login(request, user)
             return Response(data={'id': user.id}, status=status.HTTP_200_OK)
 
+
 @method_decorator(csrf_exempt, name='dispatch')
 @api_view(('GET',))
-def UserLogoutView(request):
+def userLogoutView(request):
     logout(request)
     return Response(status=status.HTTP_200_OK)
