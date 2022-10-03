@@ -24,7 +24,7 @@ class UserSignUpView(CreateAPIView):
             serializer.is_valid(raise_exception=True)
         except ValidationError:
             # 데이터가 unique하지 않음
-            return Response(data={'message': "이미 가입된 회원입니다"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(status=status.HTTP_400_BAD_REQUEST)
         except Exception:
             # 기타 오류 (발생하면 안 됨)
             return Response(exception=Exception)
