@@ -10,16 +10,22 @@ class Profile(models.Model):
     main_position = models.CharField(max_length=MAX_LENGTH, null=True)
     sub_position = models.CharField(max_length=MAX_LENGTH, null=True)
     introduction = models.TextField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
 
 class Study(models.Model):
     profile = models.OneToOneField('Profile', on_delete=models.CASCADE)
     current_study = models.CharField(max_length=MAX_LENGTH, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
 
 class Hashtag(models.Model):
     hashtag_name = models.CharField(max_length=20, primary_key=True)
     profile = models.ManyToManyField('Profile')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
 
 class Skill(models.Model):
@@ -30,6 +36,8 @@ class Skill(models.Model):
         ('fl', 'framework or library')
     )
     skill_type = models.CharField(max_length=20, choices=CHOICE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
 
 class Project(models.Model):
@@ -41,6 +49,8 @@ class Project(models.Model):
     start_date = models.DateField(null=True)
     end_date = models.DateField(null=True)
     detail = models.TextField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
 
 class Career(models.Model):
@@ -52,8 +62,12 @@ class Career(models.Model):
     end_date = models.DateField(null=True)
     skill = models.CharField(max_length=MAX_LENGTH, null=True)
     detail = models.TextField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
 
 class Follow(models.Model):
-    follower = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    following = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    follower = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='follower')
+    following = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='following')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
