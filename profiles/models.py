@@ -2,7 +2,7 @@ from django.db import models
 from django.conf import settings
 
 MAX_LENGTH = 100
-
+# TODO - user가 아닌 profile을 외래키로 받아오게?
 
 class Profile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -10,6 +10,16 @@ class Profile(models.Model):
     main_position = models.CharField(max_length=MAX_LENGTH, null=True)
     sub_position = models.CharField(max_length=MAX_LENGTH, null=True)
     introduction = models.TextField(null=True, blank=True)
+
+
+class Study(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    current_study = models.CharField(max_length=MAX_LENGTH, null=True)
+
+
+class Hashtag(models.Model):
+    hashtag_name = models.CharField(max_length=20, primary_key=True)
+    user = models.ManyToManyField(settings.AUTH_USER_MODEL)
 
 
 class Skill(models.Model):
