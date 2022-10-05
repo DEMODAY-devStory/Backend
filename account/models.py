@@ -4,12 +4,18 @@ from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, Permis
 from django.utils import timezone
 import uuid
 
+from profiles.models import Profile
+
+
 class UserManager(BaseUserManager):
 
     def _create_user(self, email, password, **extra_fields):
         user = self.model(email=email, **extra_fields)
         user.password = make_password(password)
         user.save(using=self._db)
+        # 회원가입 시 프로필 자동 생성
+        profile = Profile(user=user)
+        profile.save()
         return user
 
     def create_user(self, email, password=None, **extra_fields):
@@ -24,7 +30,6 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
-
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     email = models.EmailField(max_length=50, unique=True)
     is_staff = models.BooleanField(default=False)
@@ -32,6 +37,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     before_last_login = models.DateTimeField(default=timezone.now)
     nickname = models.CharField(max_length=15)
     name = models.CharField(max_length=15)
+    image = models.ImageField(null=True)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['nickname', 'name']
