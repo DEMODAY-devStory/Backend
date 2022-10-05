@@ -32,7 +32,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     before_last_login = models.DateTimeField(default=timezone.now)
     nickname = models.CharField(max_length=15)
     name = models.CharField(max_length=15)
-    image = models.ImageField()
+    image = models.ImageField(null=True)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['nickname', 'name']

@@ -19,7 +19,7 @@ class Skill(models.Model):
         ('pl', 'programming language'),
         ('fl', 'framework or library')
     )
-    skill_type = models.CharField(max_lengh=20, choice=CHOICE)
+    skill_type = models.CharField(max_length=20, choices=CHOICE)
 
 
 class Project(models.Model):
