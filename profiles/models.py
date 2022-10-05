@@ -5,7 +5,8 @@ MAX_LENGTH = 100
 
 
 class Profile(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='Profile')
     belong = models.CharField(max_length=MAX_LENGTH, null=True)
     main_position = models.CharField(max_length=MAX_LENGTH, null=True)
     sub_position = models.CharField(max_length=MAX_LENGTH, null=True)
@@ -18,7 +19,8 @@ class Profile(models.Model):
 
 
 class Study(models.Model):
-    profile = models.OneToOneField('Profile', on_delete=models.CASCADE)
+    profile = models.OneToOneField(
+        'Profile', on_delete=models.CASCADE, related_name='Study')
     current_study = models.CharField(max_length=MAX_LENGTH, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -29,7 +31,7 @@ class Study(models.Model):
 
 class Hashtag(models.Model):
     hashtag_name = models.CharField(max_length=20, primary_key=True)
-    profile = models.ManyToManyField('Profile')
+    profile = models.ManyToManyField('Profile', related_name='Hashtag')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -38,7 +40,8 @@ class Hashtag(models.Model):
 
 
 class Skill(models.Model):
-    profile = models.ForeignKey('Profile', on_delete=models.CASCADE)
+    profile = models.ForeignKey(
+        'Profile', on_delete=models.CASCADE, related_name='Skill')
     skill_name = models.CharField(max_length=MAX_LENGTH, null=True)
     CHOICE = (
         ('pl', 'programming language'),
@@ -53,7 +56,8 @@ class Skill(models.Model):
 
 
 class Project(models.Model):
-    profile = models.ForeignKey('Profile', on_delete=models.CASCADE)
+    profile = models.ForeignKey(
+        'Profile', on_delete=models.CASCADE, related_name='Project')
     project_name = models.CharField(max_length=MAX_LENGTH, null=True)
     position = models.CharField(max_length=MAX_LENGTH, null=True)
     skill = models.CharField(max_length=MAX_LENGTH, null=True)
@@ -69,7 +73,8 @@ class Project(models.Model):
 
 
 class Career(models.Model):
-    profile = models.ForeignKey('Profile', on_delete=models.CASCADE)
+    profile = models.ForeignKey(
+        'Profile', on_delete=models.CASCADE, related_name='Career')
     company = models.CharField(max_length=MAX_LENGTH, null=True)
     position = models.CharField(max_length=MAX_LENGTH, null=True)
     locate = models.CharField(max_length=MAX_LENGTH, null=True)
@@ -85,8 +90,10 @@ class Career(models.Model):
 
 
 class Follow(models.Model):
-    follower = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='follower')
-    following = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='following')
+    follower = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='follower')
+    following = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='following')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
