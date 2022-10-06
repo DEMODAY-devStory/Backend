@@ -1,5 +1,5 @@
 from django.contrib.auth import login, logout
-from rest_framework import status
+from rest_framework import status, viewsets
 from rest_framework.decorators import api_view
 from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
@@ -55,3 +55,10 @@ class UserLoginView(GenericAPIView):
 def userLogoutView(request):
     logout(request)
     return Response(status=status.HTTP_200_OK)
+
+
+# @method_decorator(csrf_exempt, name='dispatch')
+class UserInfoView(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserInfoSerializer
+    # lookup_field = 'id'
