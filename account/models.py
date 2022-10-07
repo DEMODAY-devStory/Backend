@@ -2,7 +2,6 @@ from django.contrib.auth.hashers import make_password
 from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, PermissionsMixin
 from django.utils import timezone
-import uuid
 
 from profiles.models import Profile, Study
 
@@ -31,7 +30,8 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
-    email = models.EmailField(max_length=50, unique=True, primary_key=True)
+    id = models.CharField(max_length=20, unique=True, primary_key=True)
+    email = models.EmailField(max_length=50, unique=True)
     is_staff = models.BooleanField(default=False)
     date_joined = models.DateTimeField(default=timezone.now)
     before_last_login = models.DateTimeField(default=timezone.now)
@@ -39,13 +39,13 @@ class User(AbstractBaseUser, PermissionsMixin):
     name = models.CharField(max_length=15)
     image = models.ImageField(null=True)
 
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['nickname', 'name']
+    USERNAME_FIELD = 'id'
+    REQUIRED_FIELDS = ['email', 'nickname', 'name']
 
     objects = UserManager()
 
     def __str__(self):
-        return self.email
+        return self.id
 
     class Meta:
         db_table = "user"
