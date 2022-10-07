@@ -31,8 +31,7 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    email = models.EmailField(max_length=50, unique=True)
+    email = models.EmailField(max_length=50, unique=True, primary_key=True)
     is_staff = models.BooleanField(default=False)
     date_joined = models.DateTimeField(default=timezone.now)
     before_last_login = models.DateTimeField(default=timezone.now)
