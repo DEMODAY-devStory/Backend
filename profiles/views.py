@@ -1,6 +1,10 @@
+from rest_framework import status
+from rest_framework.response import Response
+
 from .serializers import *
 
 from rest_framework.viewsets import ModelViewSet
+from rest_framework.decorators import action
 
 
 class ProfileView(ModelViewSet):
@@ -42,3 +46,31 @@ class CareerView(ModelViewSet):
 class FollowView(ModelViewSet):
     queryset = Follow.objects.all()
     serializer_class = FollowSerializer
+    lookup_field = "user"
+
+    # url: follow/?user={id}/{function_name}
+    @action(detail=True, methods=['get'])
+    def get_following(self, request, **kwargs):
+        queryset = self.queryset.filter(follower=kwargs['user'])
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
+
+    @action(detail=True, methods=['get'])
+    def get_follower(self, request, **kwargs):
+        queryset = self.queryset.filter(following=kwargs['user'])
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        try:  # unfollow
+            instance = self.queryset.get(
+                following=serializer.data['following']
+                , follower=serializer['follower'])
+            self.perform_destroy(instance)
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except Exception:  # follow
+            self.perform_create(serializer)
+            headers = self.get_success_headers(serializer.data)
+            return Response(status=status.HTTP_201_CREATED, headers=headers)
