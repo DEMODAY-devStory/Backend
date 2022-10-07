@@ -4,7 +4,7 @@ from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, Permis
 from django.utils import timezone
 import uuid
 
-from profiles.models import Profile
+from profiles.models import Profile, Study
 
 
 class UserManager(BaseUserManager):
@@ -13,9 +13,10 @@ class UserManager(BaseUserManager):
         user = self.model(email=email, **extra_fields)
         user.password = make_password(password)
         user.save(using=self._db)
-        # 회원가입 시 프로필 자동 생성
+        # 회원가입 시 프로필, 현재공부중 자동 생성
         profile = Profile(user=user)
         profile.save()
+        Study(profile=profile).save()
         return user
 
     def create_user(self, email, password=None, **extra_fields):
