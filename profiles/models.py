@@ -22,7 +22,7 @@ class Profile(models.Model):
 
 class Study(models.Model):
     profile = models.OneToOneField(
-        'Profile', on_delete=models.CASCADE, related_name='Study')
+        'Profile', on_delete=models.CASCADE, related_name='Study', primary_key=True)
     current_study = models.CharField(max_length=MAX_LENGTH, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
