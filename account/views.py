@@ -5,6 +5,7 @@ from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 from rest_framework.generics import CreateAPIView, GenericAPIView
 from rest_framework.permissions import AllowAny
+from rest_framework.viewsets import ModelViewSet
 
 from .serializers import *
 
@@ -55,3 +56,9 @@ class UserLoginView(GenericAPIView):
 def userLogoutView(request):
     logout(request)
     return Response(status=status.HTTP_200_OK)
+
+
+class UserView(ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    lookup_field = "id"
