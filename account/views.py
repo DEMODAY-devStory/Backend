@@ -1,5 +1,5 @@
 from django.contrib.auth import login, logout
-from rest_framework import status
+from rest_framework import status, viewsets
 from rest_framework.decorators import api_view
 from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
