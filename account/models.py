@@ -2,9 +2,8 @@ from django.contrib.auth.hashers import make_password
 from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, PermissionsMixin
 from django.utils import timezone
-import uuid
 
-from profiles.models import Profile
+from profiles.models import Profile, Study
 
 
 class UserManager(BaseUserManager):
@@ -13,9 +12,10 @@ class UserManager(BaseUserManager):
         user = self.model(email=email, **extra_fields)
         user.password = make_password(password)
         user.save(using=self._db)
-        # 회원가입 시 프로필 자동 생성
+        # 회원가입 시 프로필, 현재공부중 자동 생성
         profile = Profile(user=user)
         profile.save()
+        Study(profile=profile).save()
         return user
 
     def create_user(self, email, password=None, **extra_fields):
@@ -30,7 +30,7 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    id = models.CharField(max_length=20, unique=True, primary_key=True)
     email = models.EmailField(max_length=50, unique=True)
     is_staff = models.BooleanField(default=False)
     date_joined = models.DateTimeField(default=timezone.now)
@@ -41,13 +41,13 @@ class User(AbstractBaseUser, PermissionsMixin):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['nickname', 'name']
+    USERNAME_FIELD = 'id'
+    REQUIRED_FIELDS = ['email', 'nickname', 'name']
 
     objects = UserManager()
 
     def __str__(self):
-        return self.email
+        return self.id
 
     class Meta:
         db_table = "user"

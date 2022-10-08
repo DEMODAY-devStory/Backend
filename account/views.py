@@ -5,6 +5,7 @@ from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 from rest_framework.generics import CreateAPIView, GenericAPIView
 from rest_framework.permissions import AllowAny
+from rest_framework.viewsets import ModelViewSet
 
 from .serializers import *
 
@@ -57,8 +58,7 @@ def userLogoutView(request):
     return Response(status=status.HTTP_200_OK)
 
 
-# @method_decorator(csrf_exempt, name='dispatch')
-class UserInfoView(viewsets.ModelViewSet):
+class UserView(ModelViewSet):
     queryset = User.objects.all()
-    serializer_class = UserInfoSerializer
-    # lookup_field = 'id'
+    serializer_class = UserSerializer
+    lookup_field = "id"
