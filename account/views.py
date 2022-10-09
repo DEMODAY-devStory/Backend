@@ -17,6 +17,7 @@ from django.views.decorators.csrf import csrf_exempt
 class UserView(ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    permission_classes = (AllowAny,)
     lookup_field = "id"
 
     def create(self, request, *args, **kwargs):  # 회원가입
