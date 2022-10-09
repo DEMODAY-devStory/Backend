@@ -1,9 +1,9 @@
 from django.contrib.auth import login, logout
-from rest_framework import status, viewsets
+from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
-from rest_framework.generics import CreateAPIView, GenericAPIView
+from rest_framework.generics import GenericAPIView
 from rest_framework.permissions import AllowAny
 from rest_framework.viewsets import ModelViewSet
 
@@ -14,11 +14,12 @@ from django.views.decorators.csrf import csrf_exempt
 
 
 @method_decorator(csrf_exempt, name='dispatch')
-class UserSignUpView(CreateAPIView):
+class UserView(ModelViewSet):
+    queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = (AllowAny,)
+    lookup_field = "id"
 
-    def post(self, request, *args, **kwargs):
+    def create(self, request, *args, **kwargs):  # 회원가입
         serializer = self.serializer_class(data=request.data)
 
         try:
@@ -56,9 +57,3 @@ class UserLoginView(GenericAPIView):
 def userLogoutView(request):
     logout(request)
     return Response(status=status.HTTP_200_OK)
-
-
-class UserView(ModelViewSet):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-    lookup_field = "id"
