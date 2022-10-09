@@ -22,6 +22,34 @@ class HashtagView(ModelViewSet):
     queryset = Hashtag.objects.all()
     serializer_class = HashtagSerializer
 
+    @action(detail=True, methods=['get'])
+    def get_hashtag(self, request, user):
+        queryset = self.queryset.filter(profile=user)
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
+
+    @action(detail=True, methods=['get'])
+    def get_user(self, request, hashtag):
+        queryset = self.queryset.filter(hashtag_name=hashtag)
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
+
+    @action(detail=True, methods=['delete'])
+    def destroy(self, request, hashtag):
+        queryset = self.queryset.get(hashtag_name=hashtag)
+        queryset.profile.remove(Profile.objects.get(user=request.user))
+        if not queryset.profile:
+            self.perform_destroy(queryset)
+        return Response(status=status.HTTP_200_OK)
+
+    def create(self, request, *args, **kwargs):
+        try:
+            queryset = self.queryset.get(hashtag_name=request.data['hashtag_name'])
+            queryset.profile.add(Profile.objects.get(user=request.user))
+            return Response(status=status.HTTP_201_CREATED)
+        except Exception:
+            return super().create(request, *args, **kwargs)
+
 
 class SkillView(ModelViewSet):
     queryset = Skill.objects.all()
