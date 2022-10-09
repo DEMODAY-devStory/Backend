@@ -35,14 +35,12 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     date_joined = models.DateTimeField(default=timezone.now)
     before_last_login = models.DateTimeField(default=timezone.now)
-    nickname = models.CharField(max_length=15)
     name = models.CharField(max_length=15)
     image = models.ImageField(upload_to='users', null=True)
-    created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     USERNAME_FIELD = 'id'
-    REQUIRED_FIELDS = ['email', 'nickname', 'name']
+    REQUIRED_FIELDS = ['email', 'name']
 
     objects = UserManager()
 

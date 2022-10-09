@@ -4,7 +4,7 @@ from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
 
-router.register('userinfo', UserView)
+router.register('user', UserView)
 
 urlpatterns = router.get_urls()
 
