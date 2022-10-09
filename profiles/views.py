@@ -4,12 +4,20 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.decorators import action
 
 from .serializers import *
+from account.models import User
 
 
 class ProfileView(ModelViewSet):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
     lookup_field = "user"
+
+    @action(detail=True, methods=['get'])
+    def recommand_friends(self, request, hashtag):
+        queryset = Profile.objects.exclude(user=self.request.user)
+        queryset.exclude(user=User.follower).filter(Hashtag=hashtag)
+        serializer = self.get_serializer(queryset[:5:], many=True)
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 
 class StudyView(ModelViewSet):

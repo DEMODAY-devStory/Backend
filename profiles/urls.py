@@ -14,9 +14,8 @@ router.register('follow', FollowView)
 urlpatterns = router.get_urls()
 urlpatterns += [
     path('hashtag/', HashtagView.as_view({'post': 'create'})),
-    path('hashtag/get_hashtag/<str:user>/',
-         HashtagView.as_view({'get': 'get_hashtag'})),
-    path('hashtag/get_user/<str:hashtag>/',
-         HashtagView.as_view({'get': 'get_user'})),
+    path('hashtag/get_hashtag/<str:user>/', HashtagView.as_view({'get': 'get_hashtag'})),
+    path('hashtag/get_user/<str:hashtag>/', HashtagView.as_view({'get': 'get_user'})),
     path('hashtag/<str:hashtag>/', HashtagView.as_view({'delete': 'destroy'})),
+    path('recommand-friends/<str:hashtag>/', ProfileView.as_view({'get': 'recommand_friends'})),
 ]
