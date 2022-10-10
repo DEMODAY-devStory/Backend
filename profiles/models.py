@@ -8,9 +8,9 @@ class Profile(models.Model):
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE
         , related_name='Profile', primary_key=True)
-    belong = models.CharField(max_length=MAX_LENGTH, null=True)
-    main_position = models.CharField(max_length=MAX_LENGTH, null=True)
-    sub_position = models.CharField(max_length=MAX_LENGTH, null=True)
+    belong = models.CharField(max_length=MAX_LENGTH, null=True, blank=True)
+    main_position = models.CharField(max_length=MAX_LENGTH, null=True, blank=True)
+    sub_position = models.CharField(max_length=MAX_LENGTH, null=True, blank=True)
     introduction = models.TextField(null=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -23,7 +23,7 @@ class Profile(models.Model):
 class Study(models.Model):
     profile = models.OneToOneField(
         'Profile', on_delete=models.CASCADE, related_name='Study', primary_key=True)
-    current_study = models.CharField(max_length=MAX_LENGTH, null=True)
+    current_study = models.CharField(max_length=MAX_LENGTH, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -48,7 +48,7 @@ class Hashtag(models.Model):
 class Skill(models.Model):
     profile = models.ForeignKey(
         'Profile', on_delete=models.CASCADE, related_name='Skill')
-    skill_name = models.CharField(max_length=MAX_LENGTH, null=True)
+    skill_name = models.CharField(max_length=MAX_LENGTH)
     CHOICE = (
         ('pl', 'programming language'),
         ('fl', 'framework or library')
@@ -63,15 +63,29 @@ class Skill(models.Model):
         return str(self.skill_name) + " " + str(self.profile)
 
 
+class SkillDetail(models.Model):
+    skill_name = models.ForeignKey(
+        'Skill', on_delete=models.CASCADE, related_name='SkillDetail'
+    )
+    skill_detail = models.CharField(max_length=MAX_LENGTH)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    objects = models.Manager()
+
+    def __str__(self):
+        return str(self.skill_name) + " " + str(self.skill_detail)
+
+
 class Project(models.Model):
     profile = models.ForeignKey(
         'Profile', on_delete=models.CASCADE, related_name='Project')
-    project_name = models.CharField(max_length=MAX_LENGTH, null=True)
-    position = models.CharField(max_length=MAX_LENGTH, null=True)
-    skill = models.CharField(max_length=MAX_LENGTH, null=True)
-    coworker = models.CharField(max_length=MAX_LENGTH, null=True)
-    start_date = models.DateField(null=True)
-    end_date = models.DateField(null=True)
+    project_name = models.CharField(max_length=MAX_LENGTH)
+    position = models.CharField(max_length=MAX_LENGTH, null=True, blank=True)
+    skill = models.CharField(max_length=MAX_LENGTH, null=True, blank=True)
+    coworker = models.CharField(max_length=MAX_LENGTH, null=True, blank=True)
+    start_date = models.DateField(null=True, blank=True)
+    end_date = models.DateField(null=True, blank=True)
     detail = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -85,12 +99,12 @@ class Project(models.Model):
 class Career(models.Model):
     profile = models.ForeignKey(
         'Profile', on_delete=models.CASCADE, related_name='Career')
-    company = models.CharField(max_length=MAX_LENGTH, null=True)
-    position = models.CharField(max_length=MAX_LENGTH, null=True)
-    locate = models.CharField(max_length=MAX_LENGTH, null=True)
-    start_date = models.DateField(null=True)
-    end_date = models.DateField(null=True)
-    skill = models.CharField(max_length=MAX_LENGTH, null=True)
+    company = models.CharField(max_length=MAX_LENGTH)
+    position = models.CharField(max_length=MAX_LENGTH, null=True, blank=True)
+    locate = models.CharField(max_length=MAX_LENGTH, null=True, blank=True)
+    start_date = models.DateField(null=True, blank=True)
+    end_date = models.DateField(null=True, blank=True)
+    skill = models.CharField(max_length=MAX_LENGTH, null=True, blank=True)
     detail = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
