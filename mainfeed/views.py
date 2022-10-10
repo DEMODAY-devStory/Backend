@@ -6,9 +6,9 @@ from account.models import User
 
 from .serializers import *
 
-class RecommandView(ModelViewSet):
+class RecommendView(ModelViewSet):
     queryset = Profile.objects.all()
-    serializer_class = RecommandSerializer
+    serializer_class = RecommendSerializer
 
     def retrieve(self, request, hashtag, *args, **kwargs):
         queryset = Profile.objects.exclude(user=self.request.user).filter(Hashtag=hashtag) # 자기자신 제외 해시태그 갖고있는 사람들
