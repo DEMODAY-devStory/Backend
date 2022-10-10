@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     # applications
     'account',
     'profiles',
-
+    'mainfeed',
 
 ]
 

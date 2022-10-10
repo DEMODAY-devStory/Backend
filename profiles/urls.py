@@ -14,12 +14,9 @@ router.register('skilldetail', SkillDetailView)
 urlpatterns = router.get_urls()
 urlpatterns += [
     path('hashtag/', HashtagView.as_view({'post': 'create'})),
-    path('hashtag/get_hashtag/<str:user>/',
-         HashtagView.as_view({'get': 'get_hashtag'})),
-    path('hashtag/get_user/<str:hashtag>/',
-         HashtagView.as_view({'get': 'get_user'})),
     path('hashtag/<str:hashtag>/', HashtagView.as_view({'delete': 'destroy'})),
-
+    path('hashtag/get_user/<str:hashtag>/', HashtagView.as_view({'get': 'get_user'})),
+    path('hashtag/get_hashtag/<str:user>/', HashtagView.as_view({'get': 'get_hashtag'})),
     path('skill/get_fl/<str:user>/', SkillView.as_view({'get': 'get_fl'})),
     path('skill/get_pl/<str:user>/', SkillView.as_view({'get': 'get_pl'})),
     path('skill/', SkillView.as_view({'post': 'create'})),
