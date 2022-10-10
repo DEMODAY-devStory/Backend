@@ -26,6 +26,12 @@ class SkillSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class SkillDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SkillDetail
+        fields = '__all__'
+
+
 class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
