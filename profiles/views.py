@@ -14,8 +14,8 @@ class ProfileView(ModelViewSet):
 
     @action(detail=True, methods=['get'])
     def recommand_friends(self, request, hashtag):
-        queryset = Profile.objects.exclude(user=self.request.user)
-        queryset.exclude(user=User.follower).filter(Hashtag=hashtag)
+        queryset = Profile.objects.exclude(user=self.request.user) #자기자신 제외
+        queryset.exclude(user=User.follower).filter(Hashtag=hashtag) #자기가 팔로우하는 사람 제외
         serializer = self.get_serializer(queryset[:5:], many=True)
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
