@@ -55,15 +55,47 @@ class SkillView(ModelViewSet):
     queryset = Skill.objects.all()
     serializer_class = SkillSerializer
 
+    @action(detail=True, methods=['get'])
+    def get_fl(self, request, user):
+        queryset = self.queryset.filter(profile=user, skill_type='fl')
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
+
+    @action(detail=True, methods=['get'])
+    def get_pl(self, request, user):
+        queryset = self.queryset.filter(profile=user, skill_type='pl')
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
+
+
+class SkillDetailView(ModelViewSet):
+    queryset = SkillDetail.objects.all()
+    serializer_class = SkillDetailSerializer
+
+    def retrieve(self, request, *args, **kwargs):
+        queryset = self.queryset.filter(skill_name=kwargs['pk'])
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
+
 
 class ProjectView(ModelViewSet):
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
 
+    def retrieve(self, request, *args, **kwargs):
+        queryset = self.queryset.filter(profile=kwargs['pk'])
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
+
 
 class CareerView(ModelViewSet):
     queryset = Career.objects.all()
     serializer_class = CareerSerializer
+
+    def retrieve(self, request, *args, **kwargs):
+        queryset = self.queryset.filter(profile=kwargs['pk'])
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 
 class FollowView(ModelViewSet):
