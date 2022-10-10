@@ -4,7 +4,7 @@ from .views import *
 from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
-router.register('', ProfileView)
+router.register('profile', ProfileView)
 router.register('study', StudyView)
 router.register('skill', SkillView)
 router.register('project', ProjectView)
