@@ -57,27 +57,39 @@ class FeedView(generics.ListAPIView):
         for idol in idols:
             profile = Profile.objects.get(user=idol.following)
             if profile.updated_at > last_login:
-                instances.append(ProfileSerializer(profile).data)
+                serializer = ProfileSerializer(profile).data
+                serializer['type'] = 'profile'
+                instances.append(serializer)
 
             study = Study.objects.get(profile=profile)
             if study.updated_at > last_login:
-                instances.append(StudySerializer(study).data)
+                serializer = StudySerializer(study).data
+                serializer['type'] = 'study'
+                instances.append(serializer)
 
             skills = Skill.objects.filter(profile=profile)
             for skill in skills:
                 skillDetails = SkillDetail.objects.filter(skill_name=skill)
                 for skillDetail in skillDetails:
                     if skillDetail.updated_at > last_login:
-                        instances.append(SkillDetailSerializer(skillDetail).data)
+                        serializer = SkillDetailSerializer(skillDetail).data
+                        serializer['type'] = 'skill'
+                        serializer['skill_name'] = skill.skill_name
+                        serializer['user'] = idol.following.id
+                        instances.append(serializer)
 
             projects = Project.objects.filter(profile=profile)
             for project in projects:
                 if project.updated_at > last_login:
-                    instances.append(ProjectSerializer(project).data)
+                    serializer = ProjectSerializer(project).data
+                    serializer['type'] = 'project'
+                    instances.append(serializer)
 
             careers = Career.objects.filter(profile=profile)
             for career in careers:
                 if career.updated_at > last_login:
-                    instances.append(CareerSerializer(career).data)
+                    serializer = CareerSerializer(career).data
+                    serializer['type'] = 'career'
+                    instances.append(serializer)
 
         return Response(data=instances, status=status.HTTP_200_OK)
