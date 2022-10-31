@@ -39,7 +39,7 @@ class RecommendView(ListAPIView):
             return self.get_paginated_response(serializer.data)
 
         serializer = self.get_serializer(queryset[:5], many=True)
-        return Response(serializer.data)
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 '''
     def retrieve(self, request, *args, **kwargs):
