@@ -3,4 +3,5 @@ from .views import *
 
 urlpatterns = [
     path('recommend/<str:pk>/', RecommendView.as_view()),
+    path('', FeedView.as_view()),
 ]
