@@ -1,3 +1,4 @@
+from email.policy import default
 from django.contrib.auth.hashers import make_password
 from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, PermissionsMixin
@@ -36,7 +37,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     date_joined = models.DateTimeField(default=timezone.now)
     before_last_login = models.DateTimeField(default=timezone.now)
     name = models.CharField(max_length=15)
-    image = models.ImageField(upload_to='users', null=True)
+    image = models.ImageField(upload_to='users', null=True, blank=True, default='profile-img.png')
     updated_at = models.DateTimeField(auto_now=True)
 
     USERNAME_FIELD = 'id'
