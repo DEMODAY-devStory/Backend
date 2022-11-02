@@ -4,13 +4,15 @@ from rest_framework.response import Response
 from rest_framework.generics import ListAPIView
 
 from account.models import User
-from profiles.models import Hashtag
+from profiles.models import Profile, Hashtag
 
-from .serializers import *
+from profiles.serializers import ProfileSerializer
 
 class RecommendView(ListAPIView):
-    queryset = Profile.objects.all()
-    serializer_class = RecommendSerializer
+    serializer_class = ProfileSerializer
+
+    def get_queryset(self):
+        return None
 
     def list(self, request, *args, **kwargs):
         my_profile = Profile.objects.get(user=self.request.user)
