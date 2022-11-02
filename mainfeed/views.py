@@ -5,8 +5,6 @@ from rest_framework.response import Response
 from rest_framework.generics import ListAPIView
 
 from account.models import User
-from profiles.models import Hashtag
-
 from .serializers import *
 from profiles.serializers import *
 
@@ -92,4 +90,5 @@ class FeedView(generics.ListAPIView):
                     serializer['type'] = 'career'
                     instances.append(serializer)
 
+        instances.sort(key=lambda instance: instance['updated_at'], reverse=True)
         return Response(data=instances, status=status.HTTP_200_OK)
