@@ -1,12 +1,12 @@
-from rest_framework import status, generics
 import operator
+from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.generics import ListAPIView
 
 from account.models import User
-from profiles.models import Profile, Hashtag
+from profiles.models import *
 
-from profiles.serializers import ProfileSerializer
+from profiles.serializers import *
 
 
 class RecommendView(ListAPIView):
@@ -45,7 +45,7 @@ class RecommendView(ListAPIView):
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 
-class FeedView(generics.ListAPIView):
+class FeedView(ListAPIView):
 
     def get_queryset(self):
         return None
