@@ -50,7 +50,7 @@ class UserLoginView(GenericAPIView):
         else:
             user.before_last_login = user.last_login
             login(request, user)
-            return Response(data={'id': user.id}, status=status.HTTP_200_OK)
+            return Response(data={'id': user.id, 'img': user.image}, status=status.HTTP_200_OK)
 
 
 @method_decorator(csrf_exempt, name='dispatch')
