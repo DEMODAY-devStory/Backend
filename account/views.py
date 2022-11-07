@@ -50,7 +50,9 @@ class UserLoginView(GenericAPIView):
         else:
             user.before_last_login = user.last_login
             login(request, user)
-            return Response(data={'id': user.id}, status=status.HTTP_200_OK)
+            user = UserSerializer(user)
+            return Response(data={'id': user.data['id'], 'img': user.data['image']}
+                            , status=status.HTTP_200_OK)
 
 
 @method_decorator(csrf_exempt, name='dispatch')
