@@ -1,4 +1,4 @@
-from django.contrib.auth import login, logout
+from django.contrib.auth import login, logout, authenticate
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.exceptions import ValidationError
@@ -33,7 +33,7 @@ class UserView(ModelViewSet):
             return Response(exception=Exception)
 
         serializer.save()
-        return Response(status=status.HTTP_201_CREATED)
+        return Response(data=serializer.data, status=status.HTTP_201_CREATED)
 
 
 @method_decorator(csrf_exempt, name='dispatch')
@@ -49,14 +49,11 @@ class UserLoginView(GenericAPIView):
             return Response(status=status.HTTP_400_BAD_REQUEST)
         else:
             user.before_last_login = user.last_login
-            login(request, user)
-            user = UserSerializer(user)
-            return Response(data={'id': user.data['id'], 'img': user.data['image']}
-                            , status=status.HTTP_200_OK)
-
-
-@method_decorator(csrf_exempt, name='dispatch')
-@api_view(('GET',))
-def userLogoutView(request):
-    logout(request)
-    return Response(status=status.HTTP_200_OK)
+            user.save()
+            user_data = UserSerializer(user).data
+            return Response(
+                data={
+                    'id': user_data['id'], 'img': user_data['image']
+                    , 'token': user.token.decode('utf-8')
+                }
+                , status=status.HTTP_200_OK)

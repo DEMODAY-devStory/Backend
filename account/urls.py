@@ -1,6 +1,7 @@
 from django.urls import path
-from .views import *
 from rest_framework.routers import DefaultRouter
+
+from .views import *
 
 router = DefaultRouter()
 
@@ -10,5 +11,4 @@ urlpatterns = router.get_urls()
 
 urlpatterns += [
     path('login/', UserLoginView.as_view()),
-    path('logout/', userLogoutView),
 ]

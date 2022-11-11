@@ -1,19 +1,19 @@
-from dataclasses import fields
 from .models import User
 from rest_framework import serializers
 from django.contrib.auth import authenticate
 
 
 class UserSerializer(serializers.ModelSerializer):
+    token = serializers.CharField(max_length=255, read_only=True)
+
     class Meta:
         model = User
-        fields = ('id', 'email', 'password', 'name', 'image')
+        fields = ('id', 'email', 'password', 'name', 'image', 'token')
         extra_kwargs = {"password": {"write_only": True}}
+        read_only_fields = ('token',)
 
     def create(self, validated_data):
         return User.objects.create_user(**validated_data)
-
-    # TODO: 회원정보 수정 시 update 함수 override
 
 
 class UserLoginSerializer(serializers.Serializer):
