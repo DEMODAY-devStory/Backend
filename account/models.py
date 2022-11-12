@@ -14,8 +14,10 @@ class UserManager(BaseUserManager):
 
     def _create_user(self, email, password, **extra_fields):
         user = self.model(email=email, **extra_fields)
+        user.last_login = timezone.now()
         user.password = make_password(password)
         user.save(using=self._db)
+
         # 회원가입 시 프로필, 현재공부중 자동 생성
         profile = Profile(user=user)
         profile.save()
