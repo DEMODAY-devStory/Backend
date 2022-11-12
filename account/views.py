@@ -1,6 +1,4 @@
-from django.contrib.auth import login, logout, authenticate
 from rest_framework import status
-from rest_framework.decorators import api_view
 from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 from rest_framework.generics import GenericAPIView
@@ -20,16 +18,14 @@ class UserView(ModelViewSet):
     permission_classes = (AllowAny,)
     lookup_field = "id"
 
-    def create(self, request, *args, **kwargs):  # 회원가입
+    def create(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
 
         try:
             serializer.is_valid(raise_exception=True)
         except ValidationError:
-            # 데이터가 unique하지 않음
             return Response(status=status.HTTP_400_BAD_REQUEST)
         except Exception:
-            # 기타 오류 (발생하면 안 됨)
             return Response(exception=Exception)
 
         serializer.save()
