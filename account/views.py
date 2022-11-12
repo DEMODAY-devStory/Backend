@@ -26,10 +26,8 @@ class UserView(ModelViewSet):
         try:
             serializer.is_valid(raise_exception=True)
         except ValidationError:
-            # 데이터가 unique하지 않음
             return Response(status=status.HTTP_400_BAD_REQUEST)
         except Exception:
-            # 기타 오류 (발생하면 안 됨)
             return Response(exception=Exception)
 
         serializer.save()
