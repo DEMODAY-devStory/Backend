@@ -1,6 +1,4 @@
-from django.contrib.auth import login, logout, authenticate
 from rest_framework import status
-from rest_framework.decorators import api_view
 from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 from rest_framework.generics import GenericAPIView
@@ -20,7 +18,7 @@ class UserView(ModelViewSet):
     permission_classes = (AllowAny,)
     lookup_field = "id"
 
-    def create(self, request, *args, **kwargs):  # 회원가입
+    def create(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
 
         try:
