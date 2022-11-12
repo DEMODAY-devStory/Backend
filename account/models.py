@@ -1,9 +1,12 @@
-from email.policy import default
+from datetime import datetime, timedelta
+
+import jwt
 from django.contrib.auth.hashers import make_password
 from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, PermissionsMixin
 from django.utils import timezone
 
+from devs import settings
 from profiles.models import Profile, Study
 
 
@@ -47,6 +50,20 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.id
+
+    @property
+    def token(self):
+        return self._generate_jwt_token()
+
+    def _generate_jwt_token(self):
+        dt = datetime.now() + timedelta(days=60)
+
+        token = jwt.encode({
+            'id': self.pk,
+            'exp': dt.utcfromtimestamp(dt.timestamp())
+        }, settings.SECRET_KEY, algorithm='HS256')
+
+        return token
 
     class Meta:
         db_table = "user"
