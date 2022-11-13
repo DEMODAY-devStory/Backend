@@ -9,6 +9,10 @@ from django.utils import timezone
 from devs import settings
 from profiles.models import Profile, Study
 
+from django.dispatch import receiver
+from django_rest_passwordreset.signals import reset_password_token_created
+from django.core.mail import send_mail
+
 
 class UserManager(BaseUserManager):
 
@@ -69,3 +73,19 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     class Meta:
         db_table = "user"
+
+
+@receiver(reset_password_token_created)
+def password_reset_token_created(sender, instance, reset_password_token, *args, **kwargs):
+    email_plaintext_message = "토큰과 새 비밀번호를 입력해주세요! \ntoken = {}".format(reset_password_token.key)
+
+    send_mail(
+        # title:
+        "devStory에서 비밀번호를 변경합니다",
+        # message:
+        email_plaintext_message,
+        # from:
+        "taeho205@likelion.org",
+        # to:
+        [reset_password_token.user.email]
+    )
