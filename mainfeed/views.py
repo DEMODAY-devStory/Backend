@@ -4,8 +4,6 @@ from rest_framework.response import Response
 from rest_framework.generics import ListAPIView
 
 from account.models import User
-from profiles.models import *
-
 from profiles.serializers import *
 
 
