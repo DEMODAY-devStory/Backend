@@ -10,8 +10,10 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
-from pathlib import Path
+import json
 import os
+import sys
+from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -19,11 +21,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 MEDIA_ROOT = BASE_DIR / 'media'
 MEDIA_URL = '/media/'
 
+SECRETS_PATH = os.path.join(BASE_DIR, 'secrets.json')
+
+secrets = json.loads(open(SECRETS_PATH).read())
+
+for key, value in secrets.items():
+    setattr(sys.modules[__name__], key, value)
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-2*z&8pa^s*&yvefq%l&-plw)jqg34@&@r^k+5vp9e=i7#fgtu#'
+SECRET_KEY = secrets['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -47,6 +56,7 @@ INSTALLED_APPS = [
     'rest_auth',
     'rest_framework.authtoken',
     'allauth',
+    'django_rest_passwordreset',
     # applications
     'account',
     'profiles',
@@ -146,3 +156,11 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'account.User'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIT_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'taeho205@likelion.org'
+EMAIL_HOST_PASSWORD = secrets['EMAIL_HOST_PASSWORD']
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
