@@ -49,18 +49,21 @@ class FeedView(ListAPIView):
         return None
 
     def list(self, request, *args, **kwargs):
+        updated_idols = set()
         last_login = self.request.user.before_last_login
         idols = Follow.objects.filter(follower=self.request.user)
         instances = []
         for idol in idols:
             profile = Profile.objects.get(user=idol.following)
             if profile.updated_at > last_login:
+                updated_idols.add(idol.following.id)
                 serializer = ProfileSerializer(profile).data
                 serializer['type'] = 'profile'
                 instances.append(serializer)
 
             study = Study.objects.get(profile=profile)
             if study.updated_at > last_login:
+                updated_idols.add(idol.following.id)
                 serializer = StudySerializer(study).data
                 serializer['type'] = 'study'
                 instances.append(serializer)
@@ -70,6 +73,7 @@ class FeedView(ListAPIView):
                 skillDetails = SkillDetail.objects.filter(skill_name=skill)
                 for skillDetail in skillDetails:
                     if skillDetail.updated_at > last_login:
+                        updated_idols.add(idol.following.id)
                         serializer = SkillDetailSerializer(skillDetail).data
                         serializer['type'] = 'skill'
                         serializer['skill_name'] = skill.skill_name
@@ -79,6 +83,7 @@ class FeedView(ListAPIView):
             projects = Project.objects.filter(profile=profile)
             for project in projects:
                 if project.updated_at > last_login:
+                    updated_idols.add(idol.following.id)
                     serializer = ProjectSerializer(project).data
                     serializer['type'] = 'project'
                     instances.append(serializer)
@@ -86,9 +91,10 @@ class FeedView(ListAPIView):
             careers = Career.objects.filter(profile=profile)
             for career in careers:
                 if career.updated_at > last_login:
+                    updated_idols.add(idol.following.id)
                     serializer = CareerSerializer(career).data
                     serializer['type'] = 'career'
                     instances.append(serializer)
 
         instances.sort(key=lambda instance: instance['updated_at'], reverse=True)
-        return Response(data=instances, status=status.HTTP_200_OK)
+        return Response(data={"feed": instances, "updated_id": updated_idols}, status=status.HTTP_200_OK)
