@@ -8,7 +8,9 @@ class Profile(models.Model):
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE
         , related_name='Profile', primary_key=True)
+    link = models.URLField(max_length=MAX_LENGTH, null=True, blank=True)
     belong = models.CharField(max_length=MAX_LENGTH, null=True, blank=True)
+    major = models.CharField(max_length=MAX_LENGTH, null=True, blank=True)
     main_position = models.CharField(max_length=MAX_LENGTH, null=True, blank=True)
     sub_position = models.CharField(max_length=MAX_LENGTH, null=True, blank=True)
     introduction = models.TextField(null=True, blank=True)
@@ -68,6 +70,7 @@ class SkillDetail(models.Model):
         'Skill', on_delete=models.CASCADE, related_name='SkillDetail'
     )
     skill_detail = models.CharField(max_length=MAX_LENGTH)
+    content = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
