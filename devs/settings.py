@@ -51,7 +51,7 @@ INSTALLED_APPS = [
     'account',
     'profiles',
     'mainfeed',
-
+    'search',
 ]
 
 REST_FRAMEWORK = {
