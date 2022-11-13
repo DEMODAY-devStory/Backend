@@ -77,11 +77,11 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 @receiver(reset_password_token_created)
 def password_reset_token_created(sender, instance, reset_password_token, *args, **kwargs):
-    email_plaintext_message = "토큰과 새 비밀번호를 입력해주세요! \ntoken={}".format(reset_password_token.key)
+    email_plaintext_message = "토큰과 새 비밀번호를 입력해주세요! \ntoken = {}".format(reset_password_token.key)
 
     send_mail(
         # title:
-        "Password Reset for {title}".format(title="devStory"),
+        "devStory에서 비밀번호를 변경합니다",
         # message:
         email_plaintext_message,
         # from:
