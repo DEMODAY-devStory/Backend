@@ -23,4 +23,8 @@ class SearchView(ListAPIView):
             .filter(id__icontains=search_string).values_list('id', flat=True)
         searched_profiles.update(users)
 
+        names = User.objects.exclude(id=self.request.user.id)\
+            .filter(name__icontains=search_string).values_list('id', flat=True)
+        searched_profiles.update(names)
+
         return Response(data={"ids": searched_profiles}, status=status.HTTP_200_OK)
