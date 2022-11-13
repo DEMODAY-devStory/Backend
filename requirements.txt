@@ -8,3 +8,4 @@ sqlparse==0.4.3
 tzdata==2022.4
 django_filter==22.1
 PyJWT~=1.7.1
+django-allauth==0.51.0
