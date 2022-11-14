@@ -135,8 +135,8 @@ class FollowView(ModelViewSet):
         serializer = self.get_serializer(data=request.data)
         try:  # unfollow
             instance = self.queryset.get(
-                following=serializer.data['following']
-                , follower=serializer.data['follower'])
+                following=serializer.initial_data['following']
+                , follower=serializer.initial_data['follower'])
             self.perform_destroy(instance)
             return Response(status=status.HTTP_204_NO_CONTENT)
         except Exception:  # follow
