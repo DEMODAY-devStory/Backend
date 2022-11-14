@@ -108,10 +108,10 @@ class FollowView(ModelViewSet):
     @action(detail=True, methods=['get'])
     def get_following(self, request, user):
         following_list = self.queryset.filter(follower=user).values_list('following', flat=True)
-        queryset = []
+        queryset = list()
         for following in following_list:
             instance = dict()
-            instance['user'] = str(following)
+            instance['user'] = following
             instance['image'] = User.objects.get(id=following).image
             instance['position'] = Profile.objects.get(user_id=following).main_position
             queryset.append(instance)
@@ -121,10 +121,10 @@ class FollowView(ModelViewSet):
     @action(detail=True, methods=['get'])
     def get_follower(self, request, user):
         follower_list = self.queryset.filter(following=user).values_list('follower', flat=True)
-        queryset = []
+        queryset = list()
         for follower in follower_list:
             instance = dict()
-            instance['user'] = str(follower)
+            instance['user'] = follower
             instance['image'] = User.objects.get(id=follower).image
             instance['position'] = Profile.objects.get(user_id=follower).main_position
             queryset.append(instance)
