@@ -67,9 +67,9 @@ class Skill(models.Model):
 
 class SkillDetail(models.Model):
     skill_name = models.ForeignKey(
-        'Skill', on_delete=models.CASCADE, related_name='SkillDetail'
+        'Skill', on_delete=models.CASCADE, related_name='SkillDetail', blank=True, null=True
     )
-    skill_detail = models.CharField(max_length=MAX_LENGTH)
+    skill_detail = models.CharField(max_length=MAX_LENGTH, blank=True, null=True)
     content = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
