@@ -48,3 +48,9 @@ class FollowSerializer(serializers.ModelSerializer):
     class Meta:
         model = Follow
         fields = '__all__'
+
+
+class GetFollowSerializer(serializers.Serializer):
+    user = serializers.CharField()
+    image = serializers.ImageField()
+    position = serializers.CharField()

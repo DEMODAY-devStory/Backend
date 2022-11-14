@@ -5,6 +5,7 @@ from rest_framework.decorators import action
 
 from .serializers import *
 
+from account.models import User
 
 class ProfileView(ModelViewSet):
     queryset = Profile.objects.all()
@@ -106,14 +107,28 @@ class FollowView(ModelViewSet):
     # url: follow/{id}/{function_name}
     @action(detail=True, methods=['get'])
     def get_following(self, request, user):
-        queryset = self.queryset.filter(follower=user)
-        serializer = self.get_serializer(queryset, many=True)
+        following_list = self.queryset.filter(follower=user).values_list('following', flat=True)
+        queryset = []
+        for following in following_list:
+            instance = dict()
+            instance['user'] = str(following)
+            instance['image'] = User.objects.get(id=following).image
+            instance['position'] = Profile.objects.get(user_id=following).main_position
+            queryset.append(instance)
+        serializer = GetFollowSerializer(queryset, many=True)
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
     @action(detail=True, methods=['get'])
     def get_follower(self, request, user):
-        queryset = self.queryset.filter(following=user)
-        serializer = self.get_serializer(queryset, many=True)
+        follower_list = self.queryset.filter(following=user).values_list('follower', flat=True)
+        queryset = []
+        for follower in follower_list:
+            instance = dict()
+            instance['user'] = str(follower)
+            instance['image'] = User.objects.get(id=follower).image
+            instance['position'] = Profile.objects.get(user_id=follower).main_position
+            queryset.append(instance)
+        serializer = GetFollowSerializer(queryset, many=True)
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
     def create(self, request, *args, **kwargs):
