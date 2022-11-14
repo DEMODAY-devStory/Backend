@@ -78,6 +78,30 @@ class SkillDetailView(ModelViewSet):
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 
+class SkillDetailContentView(ModelViewSet):
+    queryset = SkillDetail.objects.all()
+    serializer_class = SkillDetailSerializer
+
+    def retrieve(self, request, *args, **kwargs):
+        queryset = self.queryset.filter(skill_name=kwargs['skilldetail_pk']).filter(id=kwargs['skill_pk'])
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
+
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
+        queryset = self.queryset.get(skill_name=kwargs['skilldetail_pk'], id=kwargs['skill_pk'])
+        serializer = self.get_serializer(queryset, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.queryset.get(skill_name=kwargs['skilldetail_pk'], id=kwargs['skill_pk'])
+        self.perform_destroy(instance)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
 class ProjectView(ModelViewSet):
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
