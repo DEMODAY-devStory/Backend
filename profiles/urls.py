@@ -22,4 +22,5 @@ urlpatterns += [
     path('skill/', SkillView.as_view({'post': 'create'})),
     path('skill/<int:pk>/', SkillView.as_view({'delete': 'destroy', 'get': 'retrieve'})),
     path('skilldetail/<int:skilldetail_pk>/<int:skill_pk>/', SkillDetailContentView.as_view({'get': 'retrieve', 'patch': 'update', 'delete': 'destroy'})),
+    path('isfollow/<str:pk>/', IsFollowView.as_view()),
 ]
