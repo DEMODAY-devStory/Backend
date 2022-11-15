@@ -179,7 +179,6 @@ class IsFollowView(RetrieveAPIView):
 
     def retrieve(self, request, *args, **kwargs):
         instance = dict()
-        print(request.user)
         try:
             get_object_or_404(Follow, follower=request.user, following=kwargs['pk'])
             instance['is_follow'] = True
