@@ -1,4 +1,7 @@
+from django.http import Http404
+from django.shortcuts import get_object_or_404
 from rest_framework import status
+from rest_framework.generics import RetrieveAPIView
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.decorators import action
@@ -6,6 +9,7 @@ from rest_framework.decorators import action
 from .serializers import *
 
 from account.models import User
+
 
 class ProfileView(ModelViewSet):
     queryset = Profile.objects.all()
@@ -168,3 +172,19 @@ class FollowView(ModelViewSet):
             self.perform_create(serializer)
             headers = self.get_success_headers(serializer.data)
             return Response(status=status.HTTP_201_CREATED, headers=headers)
+
+
+class IsFollowView(RetrieveAPIView):
+    queryset = Follow.objects.all()
+    serializer_class = FollowSerializer
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = dict()
+        try:
+            get_object_or_404(Follow, follower=request.user, following=kwargs['pk'])
+            instance['is_follow'] = True
+        except Http404:
+            instance['is_follow'] = False
+
+        serializer = IsFollowSerializer(instance)
+        return Response(serializer.data, status=status.HTTP_200_OK)
