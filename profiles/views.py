@@ -1,3 +1,4 @@
+from django.http import Http404
 from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.generics import RetrieveAPIView
@@ -182,7 +183,7 @@ class IsFollowView(RetrieveAPIView):
         try:
             get_object_or_404(Follow, follower=request.user, following=kwargs['pk'])
             instance['is_follow'] = True
-        except:
+        except Http404:
             instance['is_follow'] = False
 
         serializer = IsFollowSerializer(instance)
