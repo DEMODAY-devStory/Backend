@@ -101,6 +101,8 @@ CORS_ALLOWED_ORIGINS = [
     'https://main.d359crvpmuv173.amplifyapp.com',
 ]
 
+CORS_ORIGIN_ALLOW_ALL = True
+
 CORS_ALLOW_CREDENTIALS = True
 
 ROOT_URLCONF = 'devs.urls'
