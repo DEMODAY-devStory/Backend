@@ -44,7 +44,7 @@ DEBUG = os.environ.get('DJANGO_DEBUG', 'False') == 'True'
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
 
-ALLOWED_HOSTS = ['www.sogangfestival.com']
+ALLOWED_HOSTS = ['sogangfestival.com']
 
 REST_USE_JWT = True
 
