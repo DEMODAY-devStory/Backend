@@ -54,7 +54,3 @@ class GetFollowSerializer(serializers.Serializer):
     user = serializers.CharField()
     image = serializers.ImageField()
     position = serializers.CharField()
-
-
-class IsFollowSerializer(serializers.Serializer):
-    is_follow = serializers.BooleanField()
