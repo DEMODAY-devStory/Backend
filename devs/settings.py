@@ -21,21 +21,25 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 MEDIA_ROOT = BASE_DIR / 'media'
 MEDIA_URL = '/media/'
 
-SECRETS_PATH = os.path.join(BASE_DIR, 'secrets.json')
+# SECRETS_PATH = os.path.join(BASE_DIR, 'secrets.json')
+#
+# secrets = json.loads(open(SECRETS_PATH).read())
+#
+# for key, value in secrets.items():
+#     setattr(sys.modules[__name__], key, value)
 
-secrets = json.loads(open(SECRETS_PATH).read())
-
-for key, value in secrets.items():
-    setattr(sys.modules[__name__], key, value)
+setattr(sys.modules[__name__], "SECRET_KEY", os.environ.get('SECRET_KEY'))
+setattr(sys.modules[__name__], "EMAIL_HOST_PASSWORD", os.environ.get('EMAIL_HOST_PASSWORD'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = secrets['SECRET_KEY']
+# SECRET_KEY = secrets['SECRET_KEY']
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DJANGO_DEBUG', 'False') == 'True'
 
 ALLOWED_HOSTS = []
 
@@ -82,7 +86,7 @@ MIDDLEWARE = [
 ]
 
 # CORS 관련 추가
-CORS_ORIGIN_WHITELIST = ['http://127.0.0.1:3000', 'http://localhost:3000']
+CORS_ORIGIN_WHITELIST = ['http://127.0.0.1:3000', 'http://localhost:3000', 'https://www.sogangfestival.com']
 
 CORS_ALLOW_CREDENTIALS = True
 
@@ -162,5 +166,5 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIT_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'taeho205@likelion.org'
-EMAIL_HOST_PASSWORD = secrets['EMAIL_HOST_PASSWORD']
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
