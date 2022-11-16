@@ -43,7 +43,9 @@ class HashtagView(ModelViewSet):
     def destroy(self, request, hashtag):
         queryset = self.queryset.get(hashtag_name=hashtag)
         queryset.profile.remove(Profile.objects.get(user=request.user))
-        if not queryset.profile:
+        try:
+            queryset.profile.get()
+        except Exception:
             self.perform_destroy(queryset)
         return Response(status=status.HTTP_200_OK)
 
