@@ -179,12 +179,12 @@ class IsFollowView(RetrieveAPIView):
     serializer_class = FollowSerializer
 
     def retrieve(self, request, *args, **kwargs):
-        instance = dict()
         try:
-            get_object_or_404(Follow, follower=request.user, following=kwargs['pk'])
-            instance['is_follow'] = True
+            get_object_or_404(Follow,
+                              follower=self.request.user
+                              , following=User.objects.get(id=kwargs['pk']))
+            return Response(data={'is_follow': True}, status=status.HTTP_200_OK)
         except Http404:
-            instance['is_follow'] = False
-
-        serializer = IsFollowSerializer(instance)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+            return Response(data={'is_follow': False}, status=status.HTTP_200_OK)
+        except Exception:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
