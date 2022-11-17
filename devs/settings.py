@@ -101,7 +101,7 @@ CORS_ORIGIN_WHITELIST = [
 CORS_ALLOWED_ORIGINS = [
     'https://www.sogangfestival.com',
     'https://main.d359crvpmuv173.amplifyapp.com',
-    'devs-tory.herokuapp.com'
+    'https://devs-tory.herokuapp.com'
 ]
 
 CORS_ALLOW_CREDENTIALS = True
