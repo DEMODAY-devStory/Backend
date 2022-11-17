@@ -48,6 +48,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     name = models.CharField(max_length=15)
     image = models.ImageField(upload_to='users', null=True, blank=True, default='profile-img.png')
     updated_at = models.DateTimeField(auto_now=True)
+    link = models.URLField(max_length=100, null=True, blank=True)
 
     USERNAME_FIELD = 'id'
     REQUIRED_FIELDS = ['email', 'name']
