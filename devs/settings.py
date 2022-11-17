@@ -95,7 +95,7 @@ CORS_ORIGIN_WHITELIST = [
     'http://localhost:3000',
     'https://www.sogangfestival.com',
     'https://main.d359crvpmuv173.amplifyapp.com'
-    'devs-tory.herokuapp.com'
+    'https://devs-tory.herokuapp.com'
 ]
 
 CORS_ALLOWED_ORIGINS = [
