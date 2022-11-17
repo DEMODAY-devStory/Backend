@@ -45,7 +45,7 @@ DEBUG = os.environ.get('DJANGO_DEBUG', 'False') == 'True'
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
 
-ALLOWED_HOSTS = ['sogangfestival.com']
+ALLOWED_HOSTS = ['devs-tory.herokuapp.com']
 
 REST_USE_JWT = True
 
@@ -95,14 +95,14 @@ CORS_ORIGIN_WHITELIST = [
     'http://localhost:3000',
     'https://www.sogangfestival.com',
     'https://main.d359crvpmuv173.amplifyapp.com'
+    'devs-tory.herokuapp.com'
 ]
 
 CORS_ALLOWED_ORIGINS = [
     'https://www.sogangfestival.com',
     'https://main.d359crvpmuv173.amplifyapp.com',
+    'devs-tory.herokuapp.com'
 ]
-
-CORS_ORIGIN_ALLOW_ALL = True
 
 CORS_ALLOW_CREDENTIALS = True
 
