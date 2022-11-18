@@ -91,17 +91,13 @@ MIDDLEWARE = [
 
 # CORS 관련 추가
 CORS_ORIGIN_WHITELIST = [
-    'http://127.0.0.1:3000',
-    'http://localhost:3000',
     'https://www.devstory.link',
-    'https://main.d359crvpmuv173.amplifyapp.com'
-    'devs-tory.herokuapp.com'
+    'https://devs-tory.herokuapp.com'
 ]
 
 CORS_ALLOWED_ORIGINS = [
     'https://www.devstory.link',
-    'https://main.d359crvpmuv173.amplifyapp.com',
-    'devs-tory.herokuapp.com'
+    'https://devs-tory.herokuapp.com'
 ]
 
 CORS_ALLOW_CREDENTIALS = True
