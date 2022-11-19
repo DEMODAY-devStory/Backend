@@ -181,8 +181,8 @@ class IsFollowView(RetrieveAPIView):
     def retrieve(self, request, *args, **kwargs):
         try:
             get_object_or_404(Follow,
-                              follower=self.request.user
-                              , following=User.objects.get(id=kwargs['pk']))
+                              follower=kwargs['follower']
+                              , following=kwargs['following'])
             return Response(data={'is_follow': True}, status=status.HTTP_200_OK)
         except Http404:
             return Response(data={'is_follow': False}, status=status.HTTP_200_OK)
