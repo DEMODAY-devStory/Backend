@@ -111,7 +111,8 @@ class ProjectView(ModelViewSet):
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
 
-    def retrieve(self, request, *args, **kwargs):
+    @action(detail=True, methods=['get'])
+    def get_project(self, request, *args, **kwargs):
         queryset = self.queryset.filter(profile=kwargs['pk'])
         serializer = self.get_serializer(queryset, many=True)
         return Response(data=serializer.data, status=status.HTTP_200_OK)
