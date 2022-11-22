@@ -52,5 +52,6 @@ class FollowSerializer(serializers.ModelSerializer):
 
 class GetFollowSerializer(serializers.Serializer):
     user = serializers.CharField()
+    name = serializers.CharField()
     image = serializers.ImageField()
     position = serializers.CharField()

@@ -141,6 +141,7 @@ class FollowView(ModelViewSet):
         for following in following_list:
             instance = dict()
             instance['user'] = following
+            instance['name'] = User.objects.get(id=following).name
             instance['image'] = User.objects.get(id=following).image
             instance['position'] = Profile.objects.get(user_id=following).main_position
             queryset.append(instance)
@@ -154,6 +155,7 @@ class FollowView(ModelViewSet):
         for follower in follower_list:
             instance = dict()
             instance['user'] = follower
+            instance['name'] = User.objects.get(id=follower).name
             instance['image'] = User.objects.get(id=follower).image
             instance['position'] = Profile.objects.get(user_id=follower).main_position
             queryset.append(instance)
