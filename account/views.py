@@ -1,5 +1,6 @@
 from rest_framework import status
 from rest_framework.exceptions import ValidationError
+from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.response import Response
 from rest_framework.generics import GenericAPIView
 from rest_framework.permissions import AllowAny
@@ -15,6 +16,7 @@ from django.views.decorators.csrf import csrf_exempt
 class UserView(ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    parser_classes = (MultiPartParser, FormParser)
     permission_classes = (AllowAny,)
     lookup_field = "id"
 
