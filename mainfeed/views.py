@@ -53,7 +53,8 @@ class FeedView(ListAPIView):
             if profile.updated_at > last_login:
                 updated_idols.add(idol.following.id)
                 serializer = dict()
-                serializer['user'] = str(idol.following.id)
+                serializer['user'] = idol.following.id
+                serializer['name'] = User.objects.get(id=idol.following.id).name
                 serializer['update'] = "프로필"
                 serializer['updated_at'] = profile.updated_at
                 instances.append(serializer)
@@ -62,7 +63,8 @@ class FeedView(ListAPIView):
             if study.updated_at > last_login:
                 updated_idols.add(idol.following.id)
                 serializer = dict()
-                serializer['user'] = str(idol.following.id)
+                serializer['user'] = idol.following.id
+                serializer['name'] = User.objects.get(id=idol.following.id).name
                 serializer['update'] = "현재 진행 중"
                 serializer['updated_at'] = study.updated_at
                 instances.append(serializer)
@@ -74,7 +76,8 @@ class FeedView(ListAPIView):
                     if skillDetail.updated_at > last_login:
                         updated_idols.add(idol.following.id)
                         serializer = dict()
-                        serializer['user'] = str(idol.following.id)
+                        serializer['user'] = idol.following.id
+                        serializer['name'] = User.objects.get(id=idol.following.id).name
                         if skill.skill_type == 'pl':
                             serializer['update'] = "기술스택/Programming Language/{}".format(skill.skill_name)
                         else:
@@ -87,7 +90,8 @@ class FeedView(ListAPIView):
                 if project.updated_at > last_login:
                     updated_idols.add(idol.following.id)
                     serializer = dict()
-                    serializer['user'] = str(idol.following.id)
+                    serializer['user'] = idol.following.id
+                    serializer['name'] = User.objects.get(id=idol.following.id).name
                     serializer['update'] = "프로젝트/{}".format(project.project_name)
                     serializer['updated_at'] = project.updated_at
                     instances.append(serializer)
@@ -97,7 +101,8 @@ class FeedView(ListAPIView):
                 if career.updated_at > last_login:
                     updated_idols.add(idol.following.id)
                     serializer = dict()
-                    serializer['user'] = str(idol.following.id)
+                    serializer['user'] = idol.following.id
+                    serializer['name'] = User.objects.get(id=idol.following.id).name
                     serializer['update'] = "경력/{}".format(career.company)
                     serializer['updated_at'] = career.updated_at
                     instances.append(serializer)
