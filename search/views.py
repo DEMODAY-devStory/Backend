@@ -16,7 +16,7 @@ class SearchView(ListAPIView):
 
         hashtags = Hashtag.objects.filter(hashtag_name__icontains=search_string)
         for hashtag in hashtags:
-            profiles_queryset = hashtag.profile.all().values_list('user_id', flat=True)
+            profiles_queryset = hashtag.profile.exclude(user_id=request.user.id).values_list('user_id', flat=True)
             searched_profiles.update(profiles_queryset)
 
         users = User.objects.exclude(id=self.request.user.id) \
