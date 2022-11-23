@@ -5,6 +5,7 @@ from django.contrib.auth import authenticate
 
 class UserSerializer(serializers.ModelSerializer):
     token = serializers.CharField(max_length=255, read_only=True)
+    image = serializers.ImageField(required=False)
 
     class Meta:
         model = User

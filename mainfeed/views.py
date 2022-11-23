@@ -22,50 +22,51 @@ class RecommendView(ListAPIView):
         following_queryset = User.objects.get(id=self.request.user).follower.values_list('following_id', flat=True)
         user_list = list(set(user_queryset) - set(following_queryset))
 
-        commonhash_dict = {}
+        common_hash = dict()
         for user in user_list:
             following_hashtag = Hashtag.objects.filter(profile=user).values_list('hashtag_name', flat=True)
             common = len(set(following_hashtag) & set(my_hashtag))
-            commonhash_dict[user] = common
+            common_hash[user] = common
 
-        commonhash_dict = dict(sorted(commonhash_dict.items(), key=operator.itemgetter(1), reverse=True))
+        common_hash = dict(sorted(common_hash.items(), key=operator.itemgetter(1), reverse=True))
 
-        queryset = []
-        for user in commonhash_dict:
+        queryset = list()
+        for user in common_hash:
             queryset.append(Profile.objects.get(user=user))
-
-        page = self.paginate_queryset(queryset)
-        if page is not None:
-            serializer = self.get_serializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
 
         serializer = self.get_serializer(queryset[:5], many=True)
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 
 class FeedView(ListAPIView):
-
     def get_queryset(self):
         return None
 
     def list(self, request, *args, **kwargs):
+
         updated_idols = set()
         last_login = self.request.user.before_last_login
         idols = Follow.objects.filter(follower=self.request.user)
-        instances = []
+        instances = list()
         for idol in idols:
             profile = Profile.objects.get(user=idol.following)
             if profile.updated_at > last_login:
                 updated_idols.add(idol.following.id)
-                serializer = ProfileSerializer(profile).data
-                serializer['type'] = 'profile'
+                serializer = dict()
+                serializer['user'] = idol.following.id
+                serializer['name'] = User.objects.get(id=idol.following.id).name
+                serializer['update'] = "프로필"
+                serializer['updated_at'] = profile.updated_at
                 instances.append(serializer)
 
             study = Study.objects.get(profile=profile)
             if study.updated_at > last_login:
                 updated_idols.add(idol.following.id)
-                serializer = StudySerializer(study).data
-                serializer['type'] = 'study'
+                serializer = dict()
+                serializer['user'] = idol.following.id
+                serializer['name'] = User.objects.get(id=idol.following.id).name
+                serializer['update'] = "현재 진행 중"
+                serializer['updated_at'] = study.updated_at
                 instances.append(serializer)
 
             skills = Skill.objects.filter(profile=profile)
@@ -74,26 +75,36 @@ class FeedView(ListAPIView):
                 for skillDetail in skillDetails:
                     if skillDetail.updated_at > last_login:
                         updated_idols.add(idol.following.id)
-                        serializer = SkillDetailSerializer(skillDetail).data
-                        serializer['type'] = 'skill'
-                        serializer['skill_name'] = skill.skill_name
+                        serializer = dict()
                         serializer['user'] = idol.following.id
+                        serializer['name'] = User.objects.get(id=idol.following.id).name
+                        if skill.skill_type == 'pl':
+                            serializer['update'] = "기술스택/Programming Language/{}".format(skill.skill_name)
+                        else:
+                            serializer['update'] = "기술스택/Framework & Library/{}".format(skill.skill_name)
+                        serializer['updated_at'] = skillDetail.updated_at
                         instances.append(serializer)
 
             projects = Project.objects.filter(profile=profile)
             for project in projects:
                 if project.updated_at > last_login:
                     updated_idols.add(idol.following.id)
-                    serializer = ProjectSerializer(project).data
-                    serializer['type'] = 'project'
+                    serializer = dict()
+                    serializer['user'] = idol.following.id
+                    serializer['name'] = User.objects.get(id=idol.following.id).name
+                    serializer['update'] = "프로젝트/{}".format(project.project_name)
+                    serializer['updated_at'] = project.updated_at
                     instances.append(serializer)
 
             careers = Career.objects.filter(profile=profile)
             for career in careers:
                 if career.updated_at > last_login:
                     updated_idols.add(idol.following.id)
-                    serializer = CareerSerializer(career).data
-                    serializer['type'] = 'career'
+                    serializer = dict()
+                    serializer['user'] = idol.following.id
+                    serializer['name'] = User.objects.get(id=idol.following.id).name
+                    serializer['update'] = "경력/{}".format(career.company)
+                    serializer['updated_at'] = career.updated_at
                     instances.append(serializer)
 
         instances.sort(key=lambda instance: instance['updated_at'], reverse=True)
