@@ -43,8 +43,7 @@ class UserView(ModelViewSet):
         # image to aws s3
         if request.data['image']:
             image_url = S3ImgUploader(request.data['image']).upload()
-            data['image'] = "https://devstory-bucket.s3.amazonaws.com/" + image_url
-        print(data['image'])
+            data['image'] = "https://" + settings.S3_BUCKET_NAME + ".s3.amazonaws.com/" + image_url
 
         partial = kwargs.pop('partial', False)
         instance = self.get_object()

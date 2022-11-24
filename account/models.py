@@ -46,7 +46,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     date_joined = models.DateTimeField(default=timezone.now)
     before_last_login = models.DateTimeField(default=timezone.now)
     name = models.CharField(max_length=15)
-    image = models.TextField(null=True, blank=True, default=settings.MEDIA_URL+'/profile-img.png')
+    image = models.TextField(null=True, blank=True,
+                             default="https://" + settings.S3_BUCKET_NAME + ".s3.amazonaws.com/img/profile-img.png")
     updated_at = models.DateTimeField(auto_now=True)
     link = models.URLField(max_length=100, null=True, blank=True)
 
